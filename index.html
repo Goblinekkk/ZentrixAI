@@ -2,41 +2,44 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zentrix AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZENTRIX AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-mode"> <nav class="top-nav">
-        <button onclick="toggleSidebar()" class="nav-btn">Menu</button>
-        <span class="logo">ZENTRIX</span>
-        <button onclick="toggleDarkMode()" id="theme-btn" class="nav-btn">Dark</button>
+<body class="light-mode">
+
+    <nav class="navbar">
+        <button class="menu-btn" onclick="toggleSidebar()">MENU</button>
+        <div class="logo">ZENTRIX</div>
+        <button id="theme-btn" class="theme-btn" onclick="toggleDarkMode()">DARK</button>
     </nav>
 
     <div id="sidebar" class="sidebar">
-        <span class="close-btn" onclick="toggleSidebar()">&times;</span>
-        <div class="sidebar-content">
-            <p class="label">NAVIGACE</p>
+        <div class="sidebar-header">
+            <span class="close-icon" onclick="toggleSidebar()">×</span>
+        </div>
+        <div class="nav-links">
+            <p class="section-label">NAVIGACE</p>
             <a href="#" onclick="showChat()">Nový Chat</a>
             <a href="#" onclick="showCrypto()">Crypto Market</a>
             
-            <p class="label">VÝBĚR AI MODELU</p>
-            <button class="model-opt" onclick="setModel('Qwen/Qwen2.5-72B-Instruct')">Qwen 72B (Smart)</button>
-            <button class="model-opt" onclick="setModel('meta-llama/Llama-3.2-3B-Instruct')">Llama 3.2 (Fast)</button>
-            <button class="model-opt" onclick="setModel('mistralai/Mistral-7B-Instruct-v0.3')">Mistral 7B</button>
+            <p class="section-label">VÝBĚR MOZKU (AI)</p>
+            <button class="model-select" onclick="setModel('Qwen/Qwen2.5-72B-Instruct')">Qwen 72B (Smart)</button>
+            <button class="model-select" onclick="setModel('meta-llama/Llama-3.2-3B-Instruct')">Llama 3.2 (Fast)</button>
+            <button class="model-select" onclick="setModel('mistralai/Mistral-7B-Instruct-v0.3')">Mistral 7B</button>
         </div>
     </div>
 
-    <main id="main">
-        <div id="chat-container">
+    <main id="app">
+        <div id="chat-view">
             <div id="messages"></div>
-            <div class="input-area">
+            <div class="input-container">
                 <input type="text" id="userInput" placeholder="Zeptej se na cokoli..." autocomplete="off">
-                <button onclick="send()">Odeslat</button>
+                <button class="send-btn" onclick="send()">POSLAT</button>
             </div>
         </div>
 
-        <div id="crypto-container" class="hidden">
-            <h2 class="title">Market Pulse</h2>
+        <div id="crypto-view" class="hidden">
             <div id="crypto-list"></div>
         </div>
     </main>
