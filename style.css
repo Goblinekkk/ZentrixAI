@@ -1,51 +1,79 @@
+:root {
+    --bg: #ffffff;
+    --text: #000000;
+    --border: #eeeeee;
+    --accent: #007aff; /* Modrá pro zvýraznění */
+    --msg-user: #f4f4f4;
+}
+
+body.dark-mode {
+    --bg: #000000;
+    --text: #ffffff;
+    --border: #1a1a1a;
+    --accent: #00f2ff;
+    --msg-user: #111111;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { 
-    background: #000; 
-    color: #fff; 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica;
-    overflow-x: hidden;
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, sans-serif;
+    transition: background 0.3s, color 0.3s;
 }
 
 /* Navigace */
 .top-nav {
-    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #111;
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 5;
 }
-.menu-trigger { background: none; border: none; color: #555; cursor: pointer; font-size: 14px; }
-.logo { font-weight: bold; letter-spacing: 2px; color: #00f2ff; }
+
+.nav-btn { background: none; border: none; color: var(--text); cursor: pointer; font-size: 14px; opacity: 0.6; }
+.logo { font-weight: 700; letter-spacing: 1px; }
 
 /* Sidebar */
 .sidebar {
     position: fixed; top: 0; left: -100%; width: 100%; height: 100%;
-    background: #000; z-index: 10; transition: 0.3s; display: flex;
-    flex-direction: column; justify-content: center; align-items: center;
+    background: var(--bg); z-index: 100; transition: 0.4s;
+    padding: 60px 40px;
 }
 .sidebar.open { left: 0; }
-.close { position: absolute; top: 20px; left: 20px; font-size: 30px; cursor: pointer; color: #555; }
-.nav-links a { display: block; padding: 15px; font-size: 24px; color: #fff; text-decoration: none; text-align: center; }
+.close-btn { position: absolute; top: 20px; left: 20px; font-size: 30px; cursor: pointer; }
 
-/* Chat & Input */
-#chat-wrapper, #crypto-wrapper { max-width: 700px; margin: 0 auto; padding: 20px; }
-#messages { min-height: 200px; margin-bottom: 100px; line-height: 1.6; }
-.msg { margin-bottom: 20px; font-size: 15px; }
-.user { color: #555; }
-.ai { color: #fff; border-left: 1px solid #00f2ff; padding-left: 15px; }
+.label { font-size: 11px; color: gray; margin: 30px 0 10px 0; letter-spacing: 1px; }
+.sidebar-content a, .model-opt { 
+    display: block; padding: 12px 0; font-size: 18px; color: var(--text); 
+    text-decoration: none; background: none; border: none; width: 100%; text-align: left; cursor: pointer;
+}
 
-.input-group {
-    position: fixed; bottom: 0; left: 0; width: 100%; 
-    padding: 20px; background: #000; border-top: 1px solid #111;
+/* Chat */
+#main { max-width: 800px; margin: 0 auto; padding: 20px; }
+#messages { padding-bottom: 100px; }
+.msg { margin-bottom: 24px; line-height: 1.6; font-size: 16px; }
+.user { color: gray; }
+.ai { border-left: 2px solid var(--accent); padding-left: 15px; }
+
+.input-area {
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: var(--bg); padding: 20px; border-top: 1px solid var(--border);
     display: flex; justify-content: center;
 }
 input {
-    width: 100%; max-width: 600px; background: transparent; border: none;
-    color: #fff; font-size: 16px; outline: none; padding: 10px;
+    width: 100%; max-width: 600px; border: none; background: transparent;
+    color: var(--text); font-size: 16px; outline: none;
 }
-.input-group button { background: none; border: none; color: #00f2ff; cursor: pointer; padding: 0 15px; }
+.input-area button { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
-/* Crypto Grid */
+/* Crypto */
 .hidden { display: none; }
-.crypto-item { border-bottom: 1px solid #111; padding: 15px 0; display: flex; justify-content: space-between; }
-.up { color: #00ff88; } .down { color: #ff3e3e; }
+.crypto-item { 
+    display: flex; justify-content: space-between; padding: 20px 0; 
+    border-bottom: 1px solid var(--border); 
+}
+.up { color: #00c853; } .down { color: #ff3d00; }
+
