@@ -32,7 +32,7 @@ async function send() {
     appendMsg('user', text);
     input.value = '';
 
-    if (API_KEY.includes("SEM VLOŽ API KLÍČ")) {
+    if (API_KEY.includes("SEM VLOŽ")) {
         appendMsg('ai', "Chyba: Chybí API klíč v script.js.");
         return;
     }
