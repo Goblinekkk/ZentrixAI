@@ -5,45 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zentrix AI</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="menu-btn" onclick="toggleSidebar()">&#9776;</div>
-        <div class="brand">ZENTRIX <span class="ai-tag">AI</span></div>
-    </header>
-
-    <nav id="sidebar" class="sidebar">
-        <div class="close-btn" onclick="toggleSidebar()">&times;</div>
-        <div class="menu-items">
-            <button onclick="navAction('chat', true)">Nový Chat</button>
-            <button onclick="navAction('history')">Historie chatů</button>
-            <button onclick="navAction('crypto')">Crypto Dashboard</button>
-        </div>
+    <nav class="top-nav">
+        <button onclick="toggleSidebar()" class="menu-trigger">Menu</button>
+        <span class="logo">ZENTRIX</span>
     </nav>
 
-    <main id="app-container">
-        
-        <section id="chat-section" class="active">
-            <div id="chat-display"></div>
-            <div class="input-container">
-                <input type="text" id="user-input" placeholder="Zadejte příkaz pro AI..." onkeydown="checkEnter(event)">
-                <button onclick="handleSendMessage()">Odeslat</button>
+    <div id="sidebar" class="sidebar">
+        <span class="close" onclick="toggleSidebar()">&times;</span>
+        <div class="nav-links">
+            <a href="#" onclick="showChat()">Nový Chat</a>
+            <a href="#" onclick="showCrypto()">Crypto</a>
+            <a href="#" onclick="showHistory()">Historie</a>
+        </div>
+    </div>
+
+    <main id="content">
+        <div id="chat-wrapper">
+            <div id="messages"></div>
+            <div class="input-group">
+                <input type="text" id="userInput" placeholder="Napište zprávu..." autocomplete="off">
+                <button onclick="send()">Poslat</button>
             </div>
-        </section>
+        </div>
 
-        <section id="crypto-section" class="hidden">
-            <h2 class="section-title">Market Pulse</h2>
-            <div id="crypto-list" class="grid-container">
-                </div>
-        </section>
-
-        <section id="history-section" class="hidden">
-            <h2 class="section-title">Log Historie</h2>
-            <p style="text-align:center; color: #666;">Žádné předchozí záznamy nebyly nalezeny.</p>
-        </section>
-
+        <div id="crypto-wrapper" class="hidden">
+            <div id="crypto-data"></div>
+        </div>
     </main>
 
     <script src="script.js"></script>
