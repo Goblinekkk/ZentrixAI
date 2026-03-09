@@ -1,4 +1,4 @@
-const API_KEY = "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";
+const API_KEY = "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";
 
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
@@ -32,7 +32,7 @@ async function send() {
     appendMsg('user', text);
     input.value = '';
 
-    if (API_KEY.includes("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")) {
+    if (API_KEY.includes("")) {
         appendMsg('ai', "Chyba: Chybí API klíč v script.js.");
         return;
     }
