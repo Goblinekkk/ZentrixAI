@@ -6,33 +6,38 @@
     <title>Zentrix AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-
-    <nav class="top-nav">
-        <button onclick="toggleSidebar()" class="menu-trigger">Menu</button>
+<body class="light-mode"> <nav class="top-nav">
+        <button onclick="toggleSidebar()" class="nav-btn">Menu</button>
         <span class="logo">ZENTRIX</span>
+        <button onclick="toggleDarkMode()" id="theme-btn" class="nav-btn">Dark</button>
     </nav>
 
     <div id="sidebar" class="sidebar">
-        <span class="close" onclick="toggleSidebar()">&times;</span>
-        <div class="nav-links">
+        <span class="close-btn" onclick="toggleSidebar()">&times;</span>
+        <div class="sidebar-content">
+            <p class="label">NAVIGACE</p>
             <a href="#" onclick="showChat()">Nový Chat</a>
-            <a href="#" onclick="showCrypto()">Crypto</a>
-            <a href="#" onclick="showHistory()">Historie</a>
+            <a href="#" onclick="showCrypto()">Crypto Market</a>
+            
+            <p class="label">VÝBĚR AI MODELU</p>
+            <button class="model-opt" onclick="setModel('Qwen/Qwen2.5-72B-Instruct')">Qwen 72B (Smart)</button>
+            <button class="model-opt" onclick="setModel('meta-llama/Llama-3.2-3B-Instruct')">Llama 3.2 (Fast)</button>
+            <button class="model-opt" onclick="setModel('mistralai/Mistral-7B-Instruct-v0.3')">Mistral 7B</button>
         </div>
     </div>
 
-    <main id="content">
-        <div id="chat-wrapper">
+    <main id="main">
+        <div id="chat-container">
             <div id="messages"></div>
-            <div class="input-group">
-                <input type="text" id="userInput" placeholder="Napište zprávu..." autocomplete="off">
-                <button onclick="send()">Poslat</button>
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="Zeptej se na cokoli..." autocomplete="off">
+                <button onclick="send()">Odeslat</button>
             </div>
         </div>
 
-        <div id="crypto-wrapper" class="hidden">
-            <div id="crypto-data"></div>
+        <div id="crypto-container" class="hidden">
+            <h2 class="title">Market Pulse</h2>
+            <div id="crypto-list"></div>
         </div>
     </main>
 
