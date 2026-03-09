@@ -1,110 +1,89 @@
-// --- KONFIGURACE ---
 const API_KEY = "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"; 
-
 let currentModel = "Qwen/Qwen2.5-72B-Instruct";
 
-// --- TÉMA (DARK/LIGHT) ---
-function toggleDarkMode() {
-    const body = document.body;
-    const btn = document.getElementById('theme-btn');
-    if (body.classList.contains('light-mode')) {
-        body.classList.replace('light-mode', 'dark-mode');
-        btn.innerText = "Light";
-    } else {
-        body.classList.replace('dark-mode', 'light-mode');
-        btn.innerText = "Dark";
-    }
-}
-
-// --- NAVIGACE ---
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
 }
 
+function toggleDarkMode() {
+    const b = document.body;
+    const btn = document.getElementById('theme-btn');
+    if (b.classList.contains('light-mode')) {
+        b.classList.replace('light-mode', 'dark-mode');
+        btn.innerText = "LIGHT";
+    } else {
+        b.classList.replace('dark-mode', 'light-mode');
+        btn.innerText = "DARK";
+    }
+}
+
 function setModel(path) {
     currentModel = path;
-    appendMsg('ai', `Model přepnut na: ${path.split('/')[1]}`);
+    appendMsg('ai', `Přepnuto na mozek: ${path.split('/')[1]}`);
     toggleSidebar();
 }
 
 function showChat() {
-    document.getElementById('chat-container').classList.remove('hidden');
-    document.getElementById('crypto-container').classList.add('hidden');
+    document.getElementById('chat-view').classList.remove('hidden');
+    document.getElementById('crypto-view').classList.add('hidden');
     toggleSidebar();
 }
 
 function showCrypto() {
-    document.getElementById('chat-container').classList.add('hidden');
-    document.getElementById('crypto-container').classList.remove('hidden');
+    document.getElementById('chat-view').classList.add('hidden');
+    document.getElementById('crypto-view').classList.remove('hidden');
     loadCrypto();
     toggleSidebar();
 }
 
-// --- AI LOGIKA ---
 async function send() {
     const input = document.getElementById('userInput');
-    const text = input.value.trim();
-    if (!text) return;
+    const val = input.value.trim();
+    if (!val) return;
 
-    appendMsg('user', text);
+    appendMsg('user', val);
     input.value = '';
 
     try {
         const res = await fetch(`https://api-inference.huggingface.co/models/${currentModel}`, {
             method: "POST",
-            headers: { 
-                "Authorization": `Bearer ${API_KEY}`, 
-                "Content-Type": "application/json" 
-            },
-            body: JSON.stringify({ 
-                inputs: text,
-                parameters: { max_new_tokens: 500, return_full_text: false }
-            })
+            headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ inputs: val, parameters: { max_new_tokens: 500, return_full_text: false } })
         });
-
         const data = await res.json();
-        if (data.error && data.error.includes("loading")) {
-            appendMsg('ai', "Probouzím AI server... Zkus to za 15 sekund.");
-        } else {
-            const reply = Array.isArray(data) ? data[0].generated_text : data.generated_text;
-            appendMsg('ai', reply.trim());
-        }
+        const reply = Array.isArray(data) ? data[0].generated_text : (data.generated_text || data.error);
+        appendMsg('ai', reply);
     } catch (e) {
-        appendMsg('ai', "Chyba připojení k mozku.");
+        appendMsg('ai', "Chyba připojení. Zkontroluj klíč.");
     }
 }
 
 function appendMsg(role, text) {
-    const div = document.createElement('div');
-    div.className = `msg ${role}`;
-    div.innerText = (role === 'user' ? '> ' : '') + text;
-    document.getElementById('messages').appendChild(div);
+    const d = document.createElement('div');
+    d.className = `msg ${role}`;
+    d.innerText = (role === 'user' ? '> ' : '') + text;
+    document.getElementById('messages').appendChild(d);
     window.scrollTo(0, document.body.scrollHeight);
 }
 
-// --- CRYPTO DATA ---
 async function loadCrypto() {
     const list = document.getElementById('crypto-list');
-    list.innerHTML = 'Načítám trh...';
+    list.innerHTML = 'Načítám ceny...';
     try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true');
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,cardano&vs_currencies=usd&include_24hr_change=true');
         const data = await res.json();
-        list.innerHTML = '';
+        list.innerHTML = '<h2 style="margin-bottom:20px">Market Pulse</h2>';
         for (const [id, val] of Object.entries(data)) {
-            const ch = val.usd_24h_change.toFixed(2);
+            const change = val.usd_24h_change.toFixed(2);
             list.innerHTML += `
-                <div class="crypto-item">
-                    <span style="text-transform:uppercase; font-weight:bold;">${id}</span>
+                <div class="crypto-card">
+                    <span style="text-transform:uppercase; font-weight:bold">${id}</span>
                     <span>$${val.usd.toLocaleString()}</span>
-                    <span class="${ch >= 0 ? 'up' : 'down'}">${ch}%</span>
+                    <span class="${change >= 0 ? 'up' : 'down'}">${change}%</span>
                 </div>`;
         }
-    } catch (e) { list.innerHTML = 'Chyba API.'; }
+    } catch (e) { list.innerHTML = 'Chyba API. Zkus to později.'; }
 }
 
-// Enter pro odeslání
-document.getElementById('userInput').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') send();
-});
-
-window.onload = () => appendMsg('ai', "Zentrix AI připraven.");
+document.getElementById('userInput').addEventListener('keypress', (e) => { if(e.key === 'Enter') send(); });
+window.onload = () => appendMsg('ai', "Zentrix AI Online. Menu vlevo.");
