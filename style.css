@@ -1,48 +1,31 @@
-:root {
-    --bg: #ffffff;
-    --text: #000000;
-    --border: #eeeeee;
-    --accent: #007aff;
-    --side-bg: #f9f9f9;
-}
+:root { --bg: #ffffff; --text: #000; --border: #eee; --accent: #007aff; }
+body.dark-mode { --bg: #000; --text: #fff; --border: #222; --accent: #00f2ff; }
 
-body.dark-mode {
-    --bg: #000000;
-    --text: #ffffff;
-    --border: #1a1a1a;
-    --accent: #00f2ff;
-    --side-bg: #0a0a0a;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+body { background: var(--bg); color: var(--text); transition: 0.3s; }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+.navbar { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
+.logo { font-weight: bold; letter-spacing: 2px; }
+.nav-btn { background: none; border: 1px solid var(--border); color: var(--text); padding: 5px 10px; border-radius: 5px; cursor: pointer; }
 
-body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; transition: 0.3s; overflow-x: hidden; }
-
-/* Navbar */
-.navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; }
-.logo { font-weight: 800; letter-spacing: 2px; font-size: 18px; color: var(--accent); }
-.menu-btn, .theme-btn { background: none; border: 1px solid var(--border); color: var(--text); padding: 5px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; }
-
-/* Sidebar */
-.sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: var(--side-bg); z-index: 100; transition: 0.3s; border-right: 1px solid var(--border); padding: 20px; }
+.sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: var(--bg); border-right: 1px solid var(--border); z-index: 100; transition: 0.3s; padding: 20px; }
 .sidebar.open { left: 0; }
-.close-icon { font-size: 32px; cursor: pointer; display: block; margin-bottom: 20px; }
-.section-label { font-size: 10px; color: gray; margin: 25px 0 10px; letter-spacing: 1px; }
-.nav-links a, .model-select { display: block; width: 100%; text-align: left; padding: 12px 0; font-size: 16px; color: var(--text); text-decoration: none; background: none; border: none; cursor: pointer; border-bottom: 1px solid var(--border); }
+.close-icon { font-size: 30px; cursor: pointer; }
+.label { font-size: 10px; color: gray; margin: 20px 0 10px; letter-spacing: 1px; }
+.opt { display: block; width: 100%; text-align: left; padding: 10px 0; background: none; border: none; color: var(--text); border-bottom: 1px solid var(--border); cursor: pointer; }
 
-/* Chat Area */
-#app { max-width: 700px; margin: 0 auto; padding: 20px; }
-#messages { padding-bottom: 80px; min-height: 300px; }
-.msg { margin-bottom: 20px; line-height: 1.5; font-size: 15px; }
+.key-input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid var(--border); background: transparent; color: var(--text); border-radius: 5px; }
+.save-btn { width: 100%; padding: 8px; margin-top: 5px; background: var(--accent); color: white; border: none; border-radius: 5px; cursor: pointer; }
+
+#app { max-width: 600px; margin: 0 auto; padding: 20px; }
+#messages { padding-bottom: 80px; }
+.msg { margin-bottom: 15px; line-height: 1.5; }
+.ai { border-left: 2px solid var(--accent); padding-left: 10px; }
 .user { color: #888; }
-.ai { border-left: 2px solid var(--accent); padding-left: 15px; }
 
-/* Input */
-.input-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); border-top: 1px solid var(--border); padding: 15px 20px; display: flex; gap: 10px; }
-input { flex: 1; border: none; background: transparent; color: var(--text); font-size: 16px; outline: none; }
-.send-btn { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; }
+.bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); padding: 15px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+.bottom-bar input { flex: 1; border: none; outline: none; background: transparent; color: var(--text); font-size: 16px; }
+.bottom-bar button { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
-/* Crypto */
 .hidden { display: none; }
 .crypto-card { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border); }
-.up { color: #2ecc71; } .down { color: #e74c3c; }
