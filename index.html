@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zentrix AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="menu-btn" onclick="toggleSidebar()">&#9776;</div>
+        <div class="brand">ZENTRIX <span class="ai-tag">AI</span></div>
+    </header>
+
+    <nav id="sidebar" class="sidebar">
+        <div class="close-btn" onclick="toggleSidebar()">&times;</div>
+        <div class="menu-items">
+            <button onclick="navAction('chat', true)">Nový Chat</button>
+            <button onclick="navAction('history')">Historie chatů</button>
+            <button onclick="navAction('crypto')">Crypto Dashboard</button>
+        </div>
+    </nav>
+
+    <main id="app-container">
+        
+        <section id="chat-section" class="active">
+            <div id="chat-display"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Zadejte příkaz pro AI..." onkeydown="checkEnter(event)">
+                <button onclick="handleSendMessage()">Odeslat</button>
+            </div>
+        </section>
+
+        <section id="crypto-section" class="hidden">
+            <h2 class="section-title">Market Pulse</h2>
+            <div id="crypto-list" class="grid-container">
+                </div>
+        </section>
+
+        <section id="history-section" class="hidden">
+            <h2 class="section-title">Log Historie</h2>
+            <p style="text-align:center; color: #666;">Žádné předchozí záznamy nebyly nalezeny.</p>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
