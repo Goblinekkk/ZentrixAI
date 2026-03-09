@@ -1,106 +1,84 @@
-// --- KONFIGURACE ---
-const GROQ_API_KEY = "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";
+const API_KEY = "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";
 
-// --- NAVIGACE ---
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
 }
 
-function navAction(section, resetChat = false) {
-    const sections = ['chat', 'crypto', 'history'];
-    sections.forEach(s => {
-        document.getElementById(`${s}-section`).classList.add('hidden');
-        document.getElementById(`${s}-section`).classList.remove('active');
-    });
-
-    const activeSec = document.getElementById(`${section}-section`);
-    activeSec.classList.remove('hidden');
-    activeSec.classList.add('active');
-
-    if (resetChat && section === 'chat') {
-        document.getElementById('chat-display').innerHTML = '';
-        addMessage('ai', 'Systém resetován. Zentrix AI připraven k analýze.');
-    }
-
-    if (section === 'crypto') fetchCrypto();
+function showChat() {
+    document.getElementById('chat-wrapper').classList.remove('hidden');
+    document.getElementById('crypto-wrapper').classList.add('hidden');
+    document.getElementById('messages').innerHTML = '';
     toggleSidebar();
 }
 
-// --- CRYPTO LOGIKA ---
-async function fetchCrypto() {
-    const container = document.getElementById('crypto-list');
-    container.innerHTML = '<p style="text-align:center">Skenuji blockchain...</p>';
-    
-    try {
-        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true');
-        const data = await res.json();
-        
-        const coins = [
-            { id: 'bitcoin', symbol: 'BTC' },
-            { id: 'ethereum', symbol: 'ETH' },
-            { id: 'solana', symbol: 'SOL' }
-        ];
-
-        container.innerHTML = '';
-        coins.forEach(coin => {
-            const info = data[coin.id];
-            const change = info.usd_24h_change.toFixed(2);
-            container.innerHTML += `
-                <div class="crypto-card">
-                    <div style="font-weight:bold; letter-spacing:1px">${coin.symbol}</div>
-                    <div class="price">$${info.usd.toLocaleString()}</div>
-                    <div class="${change >= 0 ? 'up' : 'down'}">${change}% (24h)</div>
-                </div>
-            `;
-        });
-    } catch (e) {
-        container.innerHTML = '<p>Chyba při stahování dat. CoinGecko má limit požadavků.</p>';
-    }
+function showCrypto() {
+    document.getElementById('chat-wrapper').classList.add('hidden');
+    document.getElementById('crypto-wrapper').classList.remove('hidden');
+    loadCrypto();
+    toggleSidebar();
 }
 
-// --- AI CHAT LOGIKA ---
-function checkEnter(e) { if (e.key === 'Enter') handleSendMessage(); }
-
-function addMessage(type, text) {
-    const display = document.getElementById('chat-display');
-    const div = document.createElement('div');
-    div.className = `msg ${type}`;
-    div.innerText = text;
-    display.appendChild(div);
-    display.scrollTop = display.scrollHeight;
+function showHistory() {
+    alert("Historie je ukládána pouze lokálně v této relaci.");
+    toggleSidebar();
 }
 
-async function handleSendMessage() {
-    const input = document.getElementById('user-input');
+// Odesílání zpráv
+async function send() {
+    const input = document.getElementById('userInput');
     const text = input.value.trim();
     if (!text) return;
 
-    addMessage('user', text);
+    appendMsg('user', text);
     input.value = '';
 
-    if (GROQ_API_KEY === "SEM_VLOŽ_SVŮJ_GROQ_API_KLÍČ") {
-        setTimeout(() => addMessage('ai', 'Chyba: Není vložen API klíč.'), 500);
+    if (API_KEY.includes("SEM VLOŽ")) {
+        appendMsg('ai', "Chyba: Chybí API klíč v script.js.");
         return;
     }
 
     try {
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: "POST",
-            headers: {
-                "Authorization": `Bearer ${GROQ_API_KEY}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                model: "llama3-8b-8192",
-                messages: [{ role: "user", content: text }]
-            })
+            headers: { "Authorization": `Bearer ${API_KEY}`, "Content-Type": "application/json" },
+            body: JSON.stringify({ model: "llama3-8b-8192", messages: [{role: "user", content: text}] })
         });
-        const data = await response.json();
-        addMessage('ai', data.choices[0].message.content);
+        const data = await res.json();
+        appendMsg('ai', data.choices[0].message.content);
     } catch (e) {
-        addMessage('ai', 'Spojení se Zentrix jádrem selhalo.');
+        appendMsg('ai', "Chyba připojení k jádru.");
     }
 }
 
-// Inicializace
-window.onload = () => addMessage('ai', 'Terminál Zentrix AI aktivován. Čekám na příkaz.');
+function appendMsg(role, text) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `msg ${role}`;
+    msgDiv.innerText = (role === 'user' ? '> ' : '') + text;
+    document.getElementById('messages').appendChild(msgDiv);
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+// Crypto Fetch
+async function loadCrypto() {
+    const container = document.getElementById('crypto-data');
+    container.innerHTML = 'Načítám...';
+    try {
+        const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true');
+        const data = await res.json();
+        let html = '';
+        for (const [id, val] of Object.entries(data)) {
+            const change = val.usd_24h_change.toFixed(2);
+            html += `<div class="crypto-item">
+                <span>${id.toUpperCase()}</span>
+                <span>$${val.usd.toLocaleString()}</span>
+                <span class="${change >= 0 ? 'up' : 'down'}">${change}%</span>
+            </div>`;
+        }
+        container.innerHTML = html;
+    } catch (e) { container.innerHTML = 'Chyba API.'; }
+}
+
+// Enter pro odeslání
+document.getElementById('userInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') send();
+});
