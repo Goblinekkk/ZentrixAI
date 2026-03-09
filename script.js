@@ -1,4 +1,4 @@
-const API_KEY = "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"; 
+const API_KEY = "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"; 
 let currentModel = "Qwen/Qwen2.5-72B-Instruct";
 
 function toggleSidebar() {
