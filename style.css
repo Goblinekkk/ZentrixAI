@@ -2,8 +2,8 @@
     --bg: #ffffff;
     --text: #000000;
     --border: #eeeeee;
-    --accent: #007aff; /* Modrá pro zvýraznění */
-    --msg-user: #f4f4f4;
+    --accent: #007aff;
+    --side-bg: #f9f9f9;
 }
 
 body.dark-mode {
@@ -11,69 +11,38 @@ body.dark-mode {
     --text: #ffffff;
     --border: #1a1a1a;
     --accent: #00f2ff;
-    --msg-user: #111111;
+    --side-bg: #0a0a0a;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-body {
-    background-color: var(--bg);
-    color: var(--text);
-    font-family: -apple-system, sans-serif;
-    transition: background 0.3s, color 0.3s;
-}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; transition: 0.3s; overflow-x: hidden; }
 
-/* Navigace */
-.top-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; background: var(--bg); z-index: 5;
-}
-
-.nav-btn { background: none; border: none; color: var(--text); cursor: pointer; font-size: 14px; opacity: 0.6; }
-.logo { font-weight: 700; letter-spacing: 1px; }
+/* Navbar */
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 10; }
+.logo { font-weight: 800; letter-spacing: 2px; font-size: 18px; color: var(--accent); }
+.menu-btn, .theme-btn { background: none; border: 1px solid var(--border); color: var(--text); padding: 5px 12px; font-size: 12px; cursor: pointer; border-radius: 4px; }
 
 /* Sidebar */
-.sidebar {
-    position: fixed; top: 0; left: -100%; width: 100%; height: 100%;
-    background: var(--bg); z-index: 100; transition: 0.4s;
-    padding: 60px 40px;
-}
+.sidebar { position: fixed; top: 0; left: -100%; width: 280px; height: 100%; background: var(--side-bg); z-index: 100; transition: 0.3s; border-right: 1px solid var(--border); padding: 20px; }
 .sidebar.open { left: 0; }
-.close-btn { position: absolute; top: 20px; left: 20px; font-size: 30px; cursor: pointer; }
+.close-icon { font-size: 32px; cursor: pointer; display: block; margin-bottom: 20px; }
+.section-label { font-size: 10px; color: gray; margin: 25px 0 10px; letter-spacing: 1px; }
+.nav-links a, .model-select { display: block; width: 100%; text-align: left; padding: 12px 0; font-size: 16px; color: var(--text); text-decoration: none; background: none; border: none; cursor: pointer; border-bottom: 1px solid var(--border); }
 
-.label { font-size: 11px; color: gray; margin: 30px 0 10px 0; letter-spacing: 1px; }
-.sidebar-content a, .model-opt { 
-    display: block; padding: 12px 0; font-size: 18px; color: var(--text); 
-    text-decoration: none; background: none; border: none; width: 100%; text-align: left; cursor: pointer;
-}
-
-/* Chat */
-#main { max-width: 800px; margin: 0 auto; padding: 20px; }
-#messages { padding-bottom: 100px; }
-.msg { margin-bottom: 24px; line-height: 1.6; font-size: 16px; }
-.user { color: gray; }
+/* Chat Area */
+#app { max-width: 700px; margin: 0 auto; padding: 20px; }
+#messages { padding-bottom: 80px; min-height: 300px; }
+.msg { margin-bottom: 20px; line-height: 1.5; font-size: 15px; }
+.user { color: #888; }
 .ai { border-left: 2px solid var(--accent); padding-left: 15px; }
 
-.input-area {
-    position: fixed; bottom: 0; left: 0; width: 100%;
-    background: var(--bg); padding: 20px; border-top: 1px solid var(--border);
-    display: flex; justify-content: center;
-}
-input {
-    width: 100%; max-width: 600px; border: none; background: transparent;
-    color: var(--text); font-size: 16px; outline: none;
-}
-.input-area button { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; }
+/* Input */
+.input-container { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--bg); border-top: 1px solid var(--border); padding: 15px 20px; display: flex; gap: 10px; }
+input { flex: 1; border: none; background: transparent; color: var(--text); font-size: 16px; outline: none; }
+.send-btn { background: none; border: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
 /* Crypto */
 .hidden { display: none; }
-.crypto-item { 
-    display: flex; justify-content: space-between; padding: 20px 0; 
-    border-bottom: 1px solid var(--border); 
-}
-.up { color: #00c853; } .down { color: #ff3d00; }
-
+.crypto-card { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid var(--border); }
+.up { color: #2ecc71; } .down { color: #e74c3c; }
